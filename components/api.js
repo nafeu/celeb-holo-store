@@ -7,14 +7,23 @@ const jwt = require('jsonwebtoken');
 const _ = require('lodash');
 const nodemailer = require('nodemailer');
 
-const MONGODB_URI = require('../config').MONGODB_URI || process.env.MONGODB_URI;
-const SECRET = require('../config').SECRET || process.env.SECRET;
-const ADMIN_SEED = require('../config').ADMIN_SEED || process.env.ADMIN_SEED;
-const SMTP_SERVICE = require('../config').SMTP_SERVICE || process.env.SMTP_SERVICE;
-const SMTP_HOST = require('../config').SMTP_HOST || process.env.SMTP_HOST;
-const SMTP_PORT = require('../config').SMTP_PORT || process.env.SMTP_PORT;
-const SMTP_USER = require('../config').SMTP_USER || process.env.SMTP_USER;
-const SMTP_PASS = require('../config').SMTP_PASS || process.env.SMTP_PASS;
+let config;
+
+try {
+  config = require('../config');
+} catch (err) {
+  console.log('[ server.js ] Missing config file');
+  config = {};
+}
+
+const MONGODB_URI = config.MONGODB_URI || process.env.MONGODB_URI;
+const SECRET = config.SECRET || process.env.SECRET;
+const ADMIN_SEED = config.ADMIN_SEED || process.env.ADMIN_SEED;
+const SMTP_SERVICE = config.SMTP_SERVICE || process.env.SMTP_SERVICE;
+const SMTP_HOST = config.SMTP_HOST || process.env.SMTP_HOST;
+const SMTP_PORT = config.SMTP_PORT || process.env.SMTP_PORT;
+const SMTP_USER = config.SMTP_USER || process.env.SMTP_USER;
+const SMTP_PASS = config.SMTP_PASS || process.env.SMTP_PASS;
 const ALL_ROLES = ['admin', 'customer'];
 
 const hologramSeed = require('../data/hologramSeed')
