@@ -50,4 +50,23 @@ app.service('apiService', function($http) {
   this.getHolograms = function() {
     return $http.get("api/holograms");
   }
+
+  this.getHologram = function(id) {
+    return $http.get("api/hologram", {
+      id: id
+    });
+  }
+
+  this.addHologram = function(name, price) {
+    return $http.post("api/addHologram", {
+      name: name,
+      price: price
+    });
+  }
+
+  this.deleteHologram = function(id) {
+    return $http.post("api/deleteHologram", {
+      id: id
+    });
+  }
 });

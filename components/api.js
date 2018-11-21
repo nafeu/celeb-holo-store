@@ -414,7 +414,7 @@ api.get('/holograms', (req, res) => {
         });
       });
 
-      res.status(200).json(output)
+      res.status(200).json(output.reverse())
     }
   });
 });
@@ -440,8 +440,13 @@ api.post('/addHologram', (req, res) => {
 
 api.post('/deleteHologram', (req, res) => {
   if (req.body.id) {
-    Hologram.remove({id: req.body.id}, true);
-    res.status(200).send('Hologram deleted successfully');
+    Hologram.findByIdAndRemove(req.body.id, (err, result) => {
+      if (err) {
+        res.status(500).send('DB Error');
+      } else {
+        res.status(200).send('Hologram successfully removed');
+      }
+    })
   } else {
     res.status(400).send('Invalid parameters');
   }

@@ -8,7 +8,7 @@
         <div class="card m-3">
           <div class="card-body">
             Logged in as <strong>{{user.email}}</strong><br>
-            Credits remaining: <strong>{{user.credits}}</strong>
+            <!-- Credits remaining: <strong>{{user.credits}}</strong> -->
           </div>
         </div>
 
@@ -32,18 +32,27 @@
       </div>
 
       <div ng-show="currentSection == 0">
+        <div ng-show="user.role == 'admin'" class="row">
+          <div class="col-md-12">
+            <p class="lead">Add a celebrity hologram to the inventory:</p>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <button ng-click="addHologram(newHologram.name, newHologram.price)" class="btn btn-outline-secondary" type="button" id="button-addon1">Add</button>
+              </div>
+              <input ng-model="newHologram.name" type="text" class="form-control" placeholder="Enter name">
+              <input ng-model="newHologram.price" type="number" min="100" class="form-control" placeholder="Enter price">
+            </div>
+          </div>
+        </div>
         <p class="lead">Check out our wide range of celebrity holograms available for purchase.</p>
-
-<!--         <ul>
-          <li ng-repeat="hologram in holograms">{{hologram.name}}</li>
-        </ul> -->
         <div class="row">
-          <div ng-repeat="hologram in holograms" class="col-md-4 mb-4">
+          <div ng-repeat="hologram in holograms" class="col-xs-12 col-sm-6 col-md-6 col-lg-3 mb-4">
             <div class="card">
               <div class="card-body">
                 <h3 class="card-title">{{hologram.name}}</h3>
                 <p class="card-text"><strong>{{hologram.price}}</strong> credits</p>
                 <a href="" class="btn btn-primary">Purchase</a>
+                <a ng-click="deleteHologram(hologram.id)" ng-show="user.role == 'admin'" href="" class="btn btn-danger">Delete</a>
               </div>
             </div>
           </div>
