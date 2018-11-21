@@ -51,7 +51,7 @@
               <div class="card-body">
                 <h3 class="card-title">{{hologram.name}}</h3>
                 <p class="card-text"><strong>{{hologram.price}}</strong> credits</p>
-                <a href="" class="btn btn-primary">Purchase</a>
+                <a href="" ng-click="purchaseHologram(hologram.id)" class="btn btn-primary">Purchase</a>
                 <a ng-click="deleteHologram(hologram.id)" ng-show="user.role == 'admin'" href="" class="btn btn-danger">Delete</a>
               </div>
             </div>
@@ -61,6 +61,16 @@
 
       <div ng-show="currentSection == 1">
         <p class="lead">View your purchases</p>
+        <div class="row">
+          <div ng-repeat="purchase in purchases" class="col-xs-12 col-sm-6 col-md-6 col-lg-3 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h3 class="card-title">{{purchase.name}}</h3>
+                <p class="card-text"><strong>{{purchase.price}}</strong> credits</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
     </main>

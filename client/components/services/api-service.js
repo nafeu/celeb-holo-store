@@ -69,4 +69,17 @@ app.service('apiService', function($http) {
       id: id
     });
   }
+
+  this.getPurchases = function(token) {
+    return $http.post("api/user/getPurchases", {
+      token: token
+    });
+  }
+
+  this.purchaseHologram = function(token, hologramId) {
+    return $http.post("api/user/purchaseHologram", {
+      token: token,
+      hologramId: hologramId
+    });
+  }
 });

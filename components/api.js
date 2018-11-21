@@ -389,6 +389,78 @@ api.post('/users', (req, res) => {
   })
 })
 
+api.post('/user/getPurchases', (req, res) => {
+  jwt.verify(req.body.token, SECRET, function(err, decoded) {
+    if (err) {
+      res.json({
+        error: "Invalid token."
+      });
+    } else {
+      User.findById(decoded.id, function(err, user){
+        if (err) {
+          res.json({
+            error: "Invalid token, no user."
+          });
+        } else {
+          const objectIds = [];
+          user.purchases.forEach((purchaseId) => {
+            objectIds.push(mongoose.Types.ObjectId(purchaseId));
+          });
+          Hologram.find({
+            '_id': {
+              $in: objectIds
+            }
+          }, function(err, docs){
+            console.log(docs);
+            if (err) {
+              res.status(500).send("DB Error");
+            } else {
+              res.json(docs);
+            }
+          });
+        }
+      });
+    }
+  });
+})
+
+api.post('/user/purchaseHologram', (req, res) => {
+  jwt.verify(req.body.token, SECRET, function(err, decoded) {
+    if (err) {
+      res.json({
+        error: "Invalid token."
+      });
+    } else {
+      if (req.body.hologramId) {
+        User.findById(decoded.id, function(err, user){
+          if (err) {
+            res.json({
+              error: "Invalid token, no user."
+            });
+          } else if (user.purchases.includes(req.body.hologramId)) {
+            res.json({
+              error: "Item has already been purchased"
+            })
+          } else {
+            user.purchases.push(req.body.hologramId);
+            user.save((err) => {
+              if (err) {
+                res.status(500).send('DB Error');
+              } else {
+                res.status(200).send('New purchase added successfully');
+              }
+            });
+          }
+        });
+      } else {
+        res.json({
+          error: "Invalid arguments"
+        })
+      }
+    }
+  });
+})
+
 api.get('/hologram', (req, res) => {
   Hologram.findById(req.body.id, (err, result) => {
     if (err) {
