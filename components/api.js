@@ -15,7 +15,7 @@ const SMTP_HOST = require('../config').SMTP_HOST || process.env.SMTP_HOST;
 const SMTP_PORT = require('../config').SMTP_PORT || process.env.SMTP_PORT;
 const SMTP_USER = require('../config').SMTP_USER || process.env.SMTP_USER;
 const SMTP_PASS = require('../config').SMTP_PASS || process.env.SMTP_PASS;
-const ALL_ROLES = ['admin', 'roleA', 'roleB', 'roleC'];
+const ALL_ROLES = ['admin', 'customer'];
 
 const hologramSeed = require('../data/hologramSeed')
 const User = require('../models/user');
