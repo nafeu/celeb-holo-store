@@ -33,6 +33,11 @@ angular.module('myApp.dashboard', ['ngRoute'])
   ]
 
   $scope.user = authService.getLoggedInUser();
+  $scope.holograms = [];
+
+  apiService.getHolograms().then(function(res){
+    $scope.holograms = res.data;
+  });
 
   $scope.currentSection = 0;
   $scope.currentTitle = $scope.sectionMeta[$scope.currentSection].title;
@@ -40,6 +45,10 @@ angular.module('myApp.dashboard', ['ngRoute'])
   $scope.selectSection = function(id) {
     $scope.currentSection = id;
     $scope.currentTitle = $scope.sectionMeta[$scope.currentSection].title;
+
+    if (id === 0) {
+
+    }
   }
 
 

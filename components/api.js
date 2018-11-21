@@ -62,7 +62,6 @@ Hologram.count(function(err, count){
   }
 });
 
-
 // Configure Nodemailer Transporter
 let transporter = nodemailer.createTransport({
   service: SMTP_SERVICE,
@@ -389,6 +388,64 @@ api.post('/users', (req, res) => {
     });
   })
 })
+
+api.get('/hologram', (req, res) => {
+  Hologram.findById(req.body.id, (err, result) => {
+    if (err) {
+      res.status(500).send('DB Error');
+    } else {
+      res.json(result);
+    }
+  })
+})
+
+api.get('/holograms', (req, res) => {
+  Hologram.find((err, holograms) => {
+    if (err) {
+      res.status(500).send('DB Error');
+    } else {
+      const output = [];
+
+      holograms.forEach((hologram) => {
+        output.push({
+          id: hologram.id,
+          name: hologram.name,
+          price: hologram.price,
+        });
+      });
+
+      res.status(200).json(output)
+    }
+  });
+});
+
+api.post('/addHologram', (req, res) => {
+  if (req.body.name && req.body.price) {
+    newHologram = Hologram({
+      name: req.body.name,
+      price: req.body.price
+    });
+
+    newHologram.save((err) => {
+      if (err) {
+        res.status(500).send('DB Error');
+      } else {
+        res.status(200).send('New hologram successfully created');
+      }
+    });
+  } else {
+    res.status(400).send('Invalid parameters');
+  }
+});
+
+api.post('/deleteHologram', (req, res) => {
+  if (req.body.id) {
+    Hologram.remove({id: req.body.id}, true);
+    res.status(200).send('Hologram deleted successfully');
+  } else {
+    res.status(400).send('Invalid parameters');
+  }
+});
 
 function isAuth(token, roles) {
   return new Promise(function(resolve, reject){

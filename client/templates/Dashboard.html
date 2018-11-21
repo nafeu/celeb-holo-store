@@ -32,11 +32,26 @@
       </div>
 
       <div ng-show="currentSection == 0">
-        <p class="lead">This section would be filled with content specific to "Section A". Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non veniam vel iste nam tempore veritatis dolores eius quas ullam esse culpa quasi, assumenda dignissimos molestiae sint officia et, facilis labore.</p>
+        <p class="lead">Check out our wide range of celebrity holograms available for purchase.</p>
+
+<!--         <ul>
+          <li ng-repeat="hologram in holograms">{{hologram.name}}</li>
+        </ul> -->
+        <div class="row">
+          <div ng-repeat="hologram in holograms" class="col-md-4 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h3 class="card-title">{{hologram.name}}</h3>
+                <p class="card-text"><strong>{{hologram.price}}</strong> credits</p>
+                <a href="" class="btn btn-primary">Purchase</a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div ng-show="currentSection == 1">
-        <p class="lead">This section would be filled with content specific to "Section B". Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non veniam vel iste nam tempore veritatis dolores eius quas ullam esse culpa quasi, assumenda dignissimos molestiae sint officia et, facilis labore.</p>
+        <p class="lead">View your purchases</p>
       </div>
 
     </main>

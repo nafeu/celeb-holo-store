@@ -46,4 +46,8 @@ app.service('apiService', function($http) {
       token: token
     })
   }
+
+  this.getHolograms = function() {
+    return $http.get("api/holograms");
+  }
 });
