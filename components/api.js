@@ -420,7 +420,6 @@ api.post('/user/getPurchases', (req, res) => {
               $in: objectIds
             }
           }, function(err, docs){
-            console.log(docs);
             if (err) {
               res.status(500).send("DB Error");
             } else {
