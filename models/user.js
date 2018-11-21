@@ -10,8 +10,8 @@ const UserSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['admin', 'roleA', 'roleB', 'roleC'],
-    default: 'roleA'
+    enum: ['admin', 'customer'],
+    default: 'customer'
   },
   active: {
     type: Boolean,
@@ -21,7 +21,12 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  hash: String
+  hash: String,
+  purchases: [],
+  credits: {
+    type: Number,
+    default: 1000
+  }
 }, {timestamps: true});
 
 

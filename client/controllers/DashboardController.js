@@ -24,15 +24,11 @@ angular.module('myApp.dashboard', ['ngRoute'])
   $scope.sectionMeta = [
     {
       id: 0,
-      title: "Section A",
+      title: "Store",
     },
     {
       id: 1,
-      title: "Section B",
-    },
-    {
-      id: 2,
-      title: "Section C",
+      title: "Purchases",
     }
   ]
 

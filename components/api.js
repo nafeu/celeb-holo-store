@@ -17,7 +17,9 @@ const SMTP_USER = require('../config').SMTP_USER || process.env.SMTP_USER;
 const SMTP_PASS = require('../config').SMTP_PASS || process.env.SMTP_PASS;
 const ALL_ROLES = ['admin', 'roleA', 'roleB', 'roleC'];
 
+const hologramSeed = require('../data/hologramSeed')
 const User = require('../models/user');
+const Hologram = require('../models/hologram');
 
 mongoose.connect(MONGODB_URI);
 db = mongoose.connection;
@@ -47,6 +49,19 @@ User.find({email: adminCredentials[0]}, function(err, docs) {
     })
   }
 })
+
+// Seed Store Data
+Hologram.count(function(err, count){
+  if (!err && count === 0) {
+    console.log('[ api.js - Seeding hologram collection ]')
+    try {
+       Hologram.insertMany(hologramSeed);
+    } catch (e) {
+       console.log(e);
+    }
+  }
+});
+
 
 // Configure Nodemailer Transporter
 let transporter = nodemailer.createTransport({
