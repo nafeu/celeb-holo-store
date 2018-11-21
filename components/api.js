@@ -10,6 +10,11 @@ const nodemailer = require('nodemailer');
 const MONGODB_URI = require('../config').MONGODB_URI || process.env.MONGODB_URI;
 const SECRET = require('../config').SECRET || process.env.SECRET;
 const ADMIN_SEED = require('../config').ADMIN_SEED || process.env.ADMIN_SEED;
+const SMTP_SERVICE = require('../config').SMTP_SERVICE || process.env.SMTP_SERVICE;
+const SMTP_HOST = require('../config').SMTP_HOST || process.env.SMTP_HOST;
+const SMTP_PORT = require('../config').SMTP_PORT || process.env.SMTP_PORT;
+const SMTP_USER = require('../config').SMTP_USER || process.env.SMTP_USER;
+const SMTP_PASS = require('../config').SMTP_PASS || process.env.SMTP_PASS;
 const ALL_ROLES = ['admin', 'roleA', 'roleB', 'roleC'];
 
 const User = require('../models/user');
@@ -45,11 +50,10 @@ User.find({email: adminCredentials[0]}, function(err, docs) {
 
 // Configure Nodemailer Transporter
 let transporter = nodemailer.createTransport({
-  host: "smtp.mailtrap.io",
-  port: 2525,
+  service: SMTP_SERVICE,
   auth: {
-    user: "6059ad5eece13a",
-    pass: "c24572bc073f0d"
+    user: SMTP_USER,
+    pass: SMTP_PASS
   }
 });
 
@@ -89,8 +93,34 @@ api.post('/register', (req, res) => {
                 error: err
               })
             } else {
-              res.json({
-                email: newUser.email
+              generateMagicLink(newUser.email).then(function(magicLink) {
+                // setup email data with unicode symbols
+                let mailOptions = {
+                  from: '"Celebrity Hologram Store" <noreply@chstore.com>', // sender address
+                  to: newUser.email, // list of receivers
+                  subject: 'Verify Email', // Subject line
+                  text: 'Click the following link to verify your email: ' + magicLink, // plain text body
+                  html: '<b>Click the following link to verify your email: <a href="' + magicLink + '">' + magicLink + '</a></b>' // html body
+                };
+
+                // send mail with defined transport object
+                transporter.sendMail(mailOptions, (error, info) => {
+                  if (error) {
+                    res.json({
+                      error: error
+                    })
+                  }
+                  console.log('[ api.js - Message sent: %s ]', info.messageId);
+                  console.log('[ api.js - Preview URL: %s ]', nodemailer.getTestMessageUrl(info));
+
+                  res.json({
+                    email: newUser.email
+                  })
+                });
+              }, function(err) {
+                res.json({
+                  error: "Error creating magic link."
+                })
               });
             }
           })
@@ -226,7 +256,7 @@ api.post('/sendlink', (req, res) => {
       generateMagicLink(req.body.email).then(function(magicLink) {
         // setup email data with unicode symbols
         let mailOptions = {
-          from: '"Fullstack Prototyper" <noreply@fsproto.com>', // sender address
+          from: '"Celebrity Hologram Store" <noreply@chstore.com>', // sender address
           to: req.body.email, // list of receivers
           subject: 'Magic Sign-in Link', // Subject line
           text: 'Click the following link to sign-in: ' + magicLink, // plain text body

@@ -1,6 +1,6 @@
-# Fullstack Prototyper
+# Celebrity Hologram Store
 
-A starting point for basic MEAN stack applications.
+A take home exercise for a coding interview
 
 ### Credits
 
